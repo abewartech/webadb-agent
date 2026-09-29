@@ -1,0 +1,1 @@
+{"description":"Access your physical Android device (or Docker emulator) from the browser + HTTP/MCP API for AI agents","license":"MIT","name":"webadb-agent","private":true,"scripts":{"bridge":"npm start -w @webadb-agent/bridge","build":"npm run build -w @webadb-agent/bridge"},"version":"0.1.0","workspaces":["packages/*"]}

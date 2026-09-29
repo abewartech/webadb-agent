@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>webadb-agent — HP di Web</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <h1>📱 webadb-agent</h1>
+  <div class="conn">
+    <input id="token" type="password" placeholder="bearer token" autocomplete="off">
+    <button id="connectBtn">Connect</button>
+    <span id="status" class="pill off">offline</span>
+  </div>
+</header>
+<div id="devbar"><span id="devinfo">—</span></div>
+<main>
+  <section id="stage">
+    <div id="screenWrap">
+      <img id="screen" alt="layar HP" draggable="false">
+      <div id="nosignal">klik <b>Connect</b> lalu masukkan token dari terminal bridge</div>
+    </div>
+    <div id="navkeys">
+      <button data-key="BACK" title="Back">◀</button>
+      <button data-key="HOME" title="Home">●</button>
+      <button data-key="APP_SWITCH" title="Recent">■</button>
+      <button data-key="POWER" title="Power">⏻</button>
+      <button id="shotBtn" title="Screenshot">📷</button>
+    </div>
+  </section>
+  <aside>
+    <div class="card">
+      <h2>Ketik teks</h2>
+      <div class="row">
+        <input id="textInput" placeholder="teks untuk kolom aktif…">
+        <button id="sendText">Kirim</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Buka aplikasi</h2>
+      <div class="row">
+        <input id="pkgInput" placeholder="nama package, mis. com.mobile.legends…">
+        <button id="openApp">Buka</button>
+      </div>
+    </div>
+    <div class="card grow">
+      <h2>ADB shell</h2>
+      <pre id="shellOut">$ siap…</pre>
+      <div class="row">
+        <input id="shellInput" placeholder="mis. dumpsys battery | grep level" spellcheck="false">
+        <button id="runShell">▶</button>
+      </div>
+    </div>
+  </aside>
+</main>
+<footer>
+  <span>klik layar = tap · drag = swipe · <kbd>Esc</kbd> = back</span>
+  <a href="https://github.com/abewartech/webadb-agent" target="_blank" rel="noopener">github</a>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>

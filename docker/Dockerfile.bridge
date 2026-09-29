@@ -1,0 +1,9 @@
+FROM node:22-slim
+WORKDIR /app
+COPY packages/bridge/package.json ./
+RUN npm install --omit=dev
+COPY packages/bridge/dist ./dist
+COPY packages/web /app/web
+# butuh `adb` dari platform-tools di PATH, dan adb server menjangkau device
+EXPOSE 8080
+ENTRYPOINT ["node", "dist/index.js", "bridge", "--port", "8080", "--web-dir", "/app/web"]

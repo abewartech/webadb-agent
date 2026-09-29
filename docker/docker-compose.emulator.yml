@@ -1,0 +1,14 @@
+services:
+  emulator:
+    image: us-docker.pkg.dev/android-emulator-268719/images/30-google-x64:30.1.2
+    container_name: webadb-emulator
+    devices:
+      - /dev/kvm
+    ports:
+      - "5555:5555/tcp"   # ADB
+      - "8554:8554/tcp"   # emulator console
+    environment:
+      - ADBKEY=${ADBKEY:-}
+    tmpfs:
+      - /data
+    restart: unless-stopped
