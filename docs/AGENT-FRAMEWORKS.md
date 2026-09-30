@@ -23,6 +23,38 @@ curl -sk -H "Authorization: Bearer $TOKEN" $BASE/api/screenshot -o s.png
 curl -sk -H "Authorization: Bearer $TOKEN" -X POST $BASE/api/tap -d '{"x":540,"y":1200}'
 ```
 
+## Hermes Agent (milik abe sendiri)
+
+Hermes (yang jalan di server ini + Telegram) bisa nyetir HP langsung —
+paling praktis untuk automation harian.
+
+**Skill (sudah terpasang):** `skills/phone-operator/SKILL.md` sudah dicopy ke
+`~/.hermes/skills/mobile/phone-operator/`. Skill ini otomatis kepakai saat abe
+minta Hermes melakukan sesuatu di HP. Skill butuh env:
+
+```
+WEBADB_BASE=http://localhost:8080   # atau URL tunnel
+WEBADB_TOKEN=<token>
+```
+
+Set keduanya sebelum sesi, atau sebutkan manual saat diminta.
+Tanpa keduanya, skill akan minta ke user — tidak jalan buta.
+
+**MCP (alternatif):** Hermes mendukung MCP server eksternal
+(`optional-mcps/`). Daftarkan `node /path/ke/dist/index.js mcp`.
+
+**Cron Hermes:** untuk grinding terjadwal (mis. MLA harian), buat cron Hermes
+yang menjalankan prompt + REST API — pola sama seperti
+`examples/agent-prompt.md`.
+
+## Skill format (superpowers-style)
+
+`skills/phone-operator/SKILL.md` ditulis mengikuti standar
+[agentskills.io](https://agentskills.io) (frontmatter YAML) — format yang sama
+dipakai [superpowers](https://github.com/obra/superpowers), Claude Code,
+dan Hermes Agent. Agent yang mendukung skills otomatis memakainya tanpa
+setup MCP.
+
 ## Via MCP (agent-zero & OpenManus)
 
 Bridge menyediakan MCP server stdio (`webadb-agent mcp`) dengan tools:

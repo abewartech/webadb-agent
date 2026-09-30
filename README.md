@@ -64,7 +64,8 @@ curl -H "Authorization: Bearer $TOKEN" $TUNNEL_URL/api/screenshot -o s.png
 
 Tools: `screenshot`, `tap`, `swipe`, `key`, `type_text`, `shell`, `open_app`, `device_info`.
 Prompt siap pakai: `examples/agent-prompt.md`. Referensi REST: `docs/AGENT-API.md`.
-Mau pakai framework agent (OpenManus/OpenHands/agent-zero) sebagai driver? Lihat `docs/AGENT-FRAMEWORKS.md`.
+Mau pakai framework agent (OpenManus/OpenHands/agent-zero/Hermes) sebagai driver? Lihat `docs/AGENT-FRAMEWORKS.md`.
+Ada juga skill siap pakai `skills/phone-operator/SKILL.md` (format agentskills.io, untuk Claude Code/Hermes/dll).
 
 ## Struktur
 
@@ -73,7 +74,8 @@ packages/bridge/src/  → adb.ts (lapisan ADB) · server.ts (web UI + REST + WS)
                         mcp.ts (MCP stdio) · index.ts (CLI)
 packages/web/         → UI web tanpa build step
 docs/                 → ARCHITECTURE.md · AGENT-API.md · REMOTE-ACCESS.md · EMULATOR.md
-                       AGENT-FRAMEWORKS.md (OpenManus/OpenHands/agent-zero)
+                       AGENT-FRAMEWORKS.md (OpenManus/OpenHands/agent-zero/Hermes)
+skills/phone-operator/  → SKILL.md (agentskills.io, untuk Claude Code/Hermes)
 docker/               → compose emulator + Dockerfile bridge
 examples/             → agent-prompt.md
 ```
