@@ -32,6 +32,10 @@ cd packages/bridge && npm install && npm run build
 node dist/index.js bridge --port 8080
 # → catat bearer token yang tercetak
 
+# …ATAU via Docker (lihat docs/DOCKER.md):
+cp .env.example .env   # isi WEBADB_TOKEN
+docker compose up -d --build
+
 # 3. Buka http://localhost:8080, masukkan token → layar HP live di web,
 #    klik = tap, drag = swipe. Ada juga terminal ADB shell.
 ```
@@ -74,7 +78,7 @@ packages/bridge/src/  → adb.ts (lapisan ADB) · server.ts (web UI + REST + WS)
                         mcp.ts (MCP stdio) · index.ts (CLI)
 packages/web/         → UI web tanpa build step
 docs/                 → ARCHITECTURE.md · AGENT-API.md · REMOTE-ACCESS.md · EMULATOR.md
-                       AGENT-FRAMEWORKS.md (OpenManus/OpenHands/agent-zero/Hermes)
+                       AGENT-FRAMEWORKS.md (OpenManus/OpenHands/agent-zero/Hermes) · DOCKER.md
 skills/phone-operator/  → SKILL.md (agentskills.io, untuk Claude Code/Hermes)
 docker/               → compose emulator + Dockerfile bridge
 examples/             → agent-prompt.md

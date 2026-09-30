@@ -15,9 +15,12 @@ import { fileURLToPath } from "node:url";
 import { startBridge } from "./server.js";
 import { startMcp } from "./mcp.js";
 
-function arg(name: string, def?: string): string | undefined {
-  const i = process.argv.indexOf(`--${name}`);
-  return i >= 0 && process.argv[i + 1] ? process.argv[i + 1] : def;
+function opt(cliName: string, envName: string, def?: string): string | undefined {
+  const i = process.argv.indexOf(`--${cliName}`);
+  if (i >= 0 && i + 1 < process.argv.length && !process.argv[i + 1].startsWith("--")) {
+    return process.argv[i + 1];
+  }
+  return process.env[envName] ?? def;
 }
 
 function ensureAdbServer(): void {
@@ -32,9 +35,10 @@ function ensureAdbServer(): void {
 
 async function main(): Promise<void> {
   const cmd = process.argv[2] ?? "bridge";
-  const adbHost = arg("adb-host", "127.0.0.1")!;
-  const adbPort = parseInt(arg("adb-port", "5037")!, 10);
-  const serial = arg("serial");
+  // CLI flags win; env vars (WEBADB_*/ADB_*) are the Docker-friendly fallback.
+  const adbHost = opt("adb-host", "ADB_HOST", "127.0.0.1")!;
+  const adbPort = parseInt(opt("adb-port", "ADB_PORT", "5037")!, 10);
+  const serial = opt("serial", "WEBADB_SERIAL");
 
   if (cmd === "mcp") {
     await startMcp(adbHost, adbPort, serial);
@@ -42,19 +46,25 @@ async function main(): Promise<void> {
   }
 
   if (cmd === "bridge") {
-    ensureAdbServer();
-    const port = parseInt(arg("port", "8080")!, 10);
-    const token = arg("token") ?? randomBytes(24).toString("hex");
+    const localAdb = ["127.0.0.1", "localhost", "::1"].includes(adbHost);
+    if (!localAdb) {
+      console.log(`[webadb-agent] using adb server at ${adbHost}:${adbPort} (skipping local adb start)`);
+    } else if (process.env.WEBADB_SKIP_ADB_START !== "1") {
+      ensureAdbServer();
+    }
+    const port = parseInt(opt("port", "WEBADB_PORT", "8080")!, 10);
+    const token = opt("token", "WEBADB_TOKEN") ?? randomBytes(24).toString("hex");
     const here = dirname(fileURLToPath(import.meta.url));
     const webDir = join(here, "..", "..", "web"); // packages/web (dev) — override with --web-dir
+    const fps = parseInt(opt("fps", "WEBADB_FPS", "2")!, 10);
     await startBridge({
       port,
       token,
-      webDir: arg("web-dir", webDir)!,
+      webDir: opt("web-dir", "WEBADB_WEB_DIR", webDir)!,
       adbHost,
       adbPort,
       serial,
-      frameIntervalMs: parseInt(arg("fps", "2")!, 10) > 0 ? Math.round(1000 / parseInt(arg("fps", "2")!, 10)) : 500,
+      frameIntervalMs: fps > 0 ? Math.round(1000 / fps) : 500,
     });
     console.log(`[bridge] bearer token: ${token}`);
     console.log(`[bridge] keep this token secret — anyone with it can control your phone.`);

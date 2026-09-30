@@ -1,0 +1,8 @@
+node_modules
+packages/bridge/node_modules
+packages/bridge/dist
+packages/web/node_modules
+.git
+.gitignore
+npm-debug.log
+.env
